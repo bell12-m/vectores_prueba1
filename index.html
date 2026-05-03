@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campo Vectorial 3D</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f0f13;
+      color: #e8e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      padding: 18px 24px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: #15151c;
+      border-bottom: 1px solid #2a2a3a;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      color: #fff;
+    }
+
+    header p {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .viewer-wrap {
+      width: 100%;
+      max-width: 860px;
+      padding: 20px 16px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: min(70vh, 560px);
+      border-radius: 16px;
+      background: radial-gradient(ellipse at center, #1e1e2e 0%, #0f0f13 100%);
+      border: 1px solid #2a2a3a;
+      --poster-color: transparent;
+      --progress-bar-color: #7F77DD;
+      --progress-mask: transparent;
+    }
+
+    /* Botón AR personalizado */
+    .ar-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #7F77DD;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      slot: ar-button;
+    }
+    .ar-btn:hover  { background: #6a62c4; }
+    .ar-btn:active { transform: scale(.97); }
+
+    .ar-icon {
+      width: 20px; height: 20px;
+      fill: none; stroke: #fff;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid #2a2a3a;
+      color: #aaa;
+      background: #15151c;
+    }
+
+    .chip span { color: #7F77DD; font-weight: 500; }
+
+    .legend {
+      background: #15151c;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .legend-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .gradient-bar {
+      height: 10px;
+      border-radius: 6px;
+      background: linear-gradient(to right, #2245e6, #10c0e6, #33d933, #f5d800, #f22424);
+    }
+
+    .gradient-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #666;
+    }
+
+    .formula {
+      background: #15151c;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #bbb;
+      line-height: 1.7;
+    }
+
+    .formula code {
+      color: #a89ef5;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: #444;
+    }
+
+    @media (max-width: 480px) {
+      model-viewer { height: 55vh; border-radius: 12px; }
+      header h1 { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Campo Vectorial 3D</h1>
+  <p>Arrastra para rotar · Pellizca para zoom · Botón AR para verlo en tu cuarto</p>
+</header>
+
+<div class="viewer-wrap">
+
+  <model-viewer
+    src="pruebitaVectores.glb"
+    alt="Campo vectorial F(u,v,w) = (-v, u, 1) en el cilindro u²+v²≤25"
+    camera-controls
+    auto-rotate
+    auto-rotate-delay="1000"
+    rotation-per-second="12deg"
+    shadow-intensity="0.4"
+    environment-image="neutral"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    ar-scale="auto"
+    camera-orbit="30deg 70deg 28m"
+    min-camera-orbit="auto auto 5m"
+    max-camera-orbit="auto auto 80m"
+    interaction-prompt="auto"
+  >
+    <button class="ar-btn" slot="ar-button">
+      <svg class="ar-icon" viewBox="0 0 24 24">
+        <path d="M5 3H3v4M19 3h2v4M5 21H3v-4M19 21h2v-4"/>
+        <path d="M12 8l4 2.5v5L12 18l-4-2.5v-5L12 8z"/>
+        <path d="M12 8v5M8 10.5l4 2.5M16 10.5l-4 2.5"/>
+      </svg>
+      Ver en AR
+    </button>
+  </model-viewer>
+
+  <div class="info-row">
+    <div class="chip">Campo <span>F(u,v,w) = (−v, u, 1)</span></div>
+    <div class="chip">Dominio <span>u²+v² ≤ 25</span></div>
+    <div class="chip">Z <span>0 → 16</span></div>
+    <div class="chip">Paso <span>2 unidades</span></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Color por magnitud</div>
+    <div class="gradient-bar"></div>
+    <div class="gradient-labels">
+      <span>Baja</span>
+      <span>Media</span>
+      <span>Alta</span>
+    </div>
+  </div>
+
+  <div class="formula">
+    <strong style="color:#e8e8f0">Fórmula original (GeoGebra):</strong><br>
+    <code>Si(u²+v²≤5², Vector((u,v,w),(u−v, v+u, w+1)))</code><br><br>
+    <strong style="color:#e8e8f0">Campo resultante:</strong><br>
+    <code>F(u, v, w) = (−v, u, 1)</code> — rotación en XY + traslación en Z
+  </div>
+
+</div>
+
+<footer>Generado con Blender · Visualizado con &lt;model-viewer&gt;</footer>
+
+</body>
+</html>
